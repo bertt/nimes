@@ -1,0 +1,57 @@
+{
+    "pipeline": 
+    [
+        {
+            "type": "readers.las",
+            "filename": "Semis_2021_0808_6304_LA93_IGN69.laz",
+ 	        "tag": "Semis_2021_0808_6304_LA93_IGN69",
+             "default_srs":"EPSG:2154"
+        },
+        {
+            "type": "readers.las",
+            "filename": "Semis_2021_0808_6305_LA93_IGN69.laz",
+ 	        "tag": "Semis_2021_0808_6305_LA93_IGN69",
+             "default_srs":"EPSG:2154"
+       },
+        {
+            "type": "readers.las",
+            "filename": "Semis_2021_0809_6304_LA93_IGN69.laz",
+ 	        "tag": "Semis_2021_0809_6304_LA93_IGN69",
+             "default_srs":"EPSG:2154"
+            },
+        {
+            "type": "readers.las",
+            "filename": "Semis_2021_0809_6305_LA93_IGN69.laz",
+ 	        "tag": "Semis_2021_0809_6305_LA93_IGN69",
+             "default_srs":"EPSG:2154"
+        },
+        {
+            "type": "filters.merge",
+            "inputs": ["Semis_2021_0808_6304_LA93_IGN69", 
+		       "Semis_2021_0808_6305_LA93_IGN69",
+		       "Semis_2021_0809_6304_LA93_IGN69",
+		       "Semis_2021_0809_6305_LA93_IGN69"],
+  	        "tag":"merged"
+        },
+        {
+            "type": "filters.crop",
+            "bounds":"([809201.3240,809511.9493],[6304818.2773,6305024.8953])"
+        },
+        {
+            "type": "filters.assign",
+            "value": [
+                "Classification = 0 where Z<40 ", 
+                "Classification = 1 where Z<45 && Z>=40",
+                "Classification = 2 where Z<50 && Z>=45",
+                "Classification = 3 where Z<55 && Z>=50",
+                "Classification = 4 where Z<60 && Z>=55",
+                "Classification = 5 where Z<65 && Z>=60",
+                "Classification = 6 where Z>=65"
+            ]
+        },
+        {
+          "type": "writers.las",
+          "filename": "result.las"
+        }
+    ]
+}
